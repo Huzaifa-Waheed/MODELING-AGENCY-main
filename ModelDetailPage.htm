@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Prism&family=Ubuntu:wght@300&display=swap"
+        rel="stylesheet">
+    <title>Modeling Agency Website</title>
+    <link rel="stylesheet" href="ModelDetailPage.css">
+</head>
+
+<body>
+
+    <!-- CREATING NAVBAR -->
+    <div id="navbar">
+        <a href="#HOME" class="logo">
+            <img src="Pics/logo.png" alt="cinexcs icon">
+        </a>
+
+        <ul class="navlist">
+            <li><a href="./LandingPage.htm">HOME</a></li>
+            <li><a href="./ExplorePage.htm">EXPLORE</a></li>
+            <li><a href="#ABOUT">ABOUT</a></li>
+            <li><a href="#LOGOUT">LOGOUT</a></li>
+        </ul>
+    </div>
+
+    <!-- CREATING CONTAINER -->
+    <div id="container">
+
+        <div id="model-details">
+            <h2 id="model-name"></h2>
+            <p class="model-detail-item"><strong>PER DAY RATE:</strong> <span id="model-rate"></span></p>
+            <p class="model-detail-item"><strong>HEIGHT:</strong> <span id="model-height"></span></p>
+            <p class="model-detail-item"><strong>WEIGHT:</strong> <span id="model-weight"></span></p>
+            <p class="model-detail-item"><strong>WAIST:</strong> <span id="model-waist"></span></p>
+            <p class="model-detail-item"><strong>HIPS:</strong> <span id="model-hips"></span></p>
+            <p class="model-detail-item"><strong>HAIR:</strong> <span id="model-hair"></span></p>
+            <p class="model-detail-item"><strong>SHOE SIZE:</strong> <span id="model-shoe"></span></p>
+            <p class="model-detail-item"><strong>EYE COLOR:</strong> <span id="model-eye"></span></p>
+            <p class="model-detail-item"><strong>LOCATION:</strong> <span id="model-location"></span></p>
+            <a href="#" id="hire-btn">HIRE NOW!</a>
+
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+        <div id="image-slider">
+            <div class="experience-line" id="model-experience"></div>
+            <div class="image-wrapper" id="image-wrapper"></div>
+
+            <button class="slider-btn prev" id="prevBtn">&#10094;</button>
+            <button class="slider-btn next" id="nextBtn">&#10095;</button>
+
+            <div id="agency-description">
+                We, CINEXCS modeling agency, provide an experienced professional crew to offer personalized and
+                strategic management for a select group of "A" level models.
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="ModelDetailPage.js"></script>
+
+</html>

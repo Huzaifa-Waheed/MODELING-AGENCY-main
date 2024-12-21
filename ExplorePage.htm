@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tilt+Prism&family=Ubuntu:wght@300&display=swap"
+        rel="stylesheet">
+    <title>Modeling Agency Website</title>
+    <link rel="stylesheet" href="ExplorePage.css">
+</head>
+
+<body>
+
+     <!-- CREATING NAVBAR -->
+    <div id="navbar">
+        <a href="#HOME" class="logo">
+            <img src="Pics/logo.png" alt="cinexcs icon">
+        </a>
+
+        <ul class="navlist">
+            <li><a href="./LandingPage.htm">HOME</a></li>
+            <li><a href="#EXPLORE">EXPLORE</a></li>
+            <li><a href="#ABOUT">ABOUT</a></li>
+            <li><a href="#LOGOUT">LOGOUT</a></li>
+        </ul>
+    </div>
+  
+    <!-- CREATING SEARCH AND CATEGORY -->
+    <div class="filter-controls">
+        <div class="search-bar" id="search-models">
+            <input type="text" id="searchInput" placeholder="Search models..." />
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="category-bar">
+            <a href="#" class="category-link active" data-category="all">ALL</a>
+            <a href="#" class="category-link" data-category="male">MALE</a>
+            <a href="#" class="category-link" data-category="female">FEMALE</a>
+        </div>
+    </div>
+    
+    <!-- CREATING MODEL GALLERY -->
+    <div id="model-gallery">
+        <!-- Model cards (dynamic for each model) -->
+    </div>
+
+    <script src="ExplorePage.js"></script>
+</body>
+
+</html>

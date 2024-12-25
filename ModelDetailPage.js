@@ -1,3 +1,9 @@
+// Function to open the hire card modal
+const hireBtn = document.getElementById('hire-btn');
+const hireModal = document.getElementById('hire-card-modal');
+const hireConfirmBtn = document.getElementById('hire-confirm');
+const hireCancelBtn = document.getElementById('hire-cancel');
+
 // Extract model name from URL
 const params = new URLSearchParams(window.location.search);
 const modelName = params.get('name');
@@ -116,3 +122,27 @@ function updateSliderPosition() {
     const moveAmount = -currentPosition * 100;
     imageWrapper.style.transform = `translateX(${moveAmount}%)`;
 }
+
+// Show the modal when "Hire Now" button is clicked
+hireBtn.addEventListener('click', () => {
+    hireModal.classList.add('show');
+});
+
+// Close the modal when the cancel button is clicked
+hireCancelBtn.addEventListener('click', () => {
+    hireModal.classList.remove('show');
+});
+
+// Handle confirmation logic 
+hireConfirmBtn.addEventListener('click', () => {
+    const hireDate = document.getElementById('hire-date').value;
+    const hireDescription = document.getElementById('hire-description').value;
+    
+    if (hireDate && hireDescription) {
+        // Logic for confirming the hire (send data to the server)
+        alert('Model hired successfully!');
+        hireModal.classList.remove('show'); // Close the modal
+    } else {
+        alert('Please fill in all fields!');
+    }
+});

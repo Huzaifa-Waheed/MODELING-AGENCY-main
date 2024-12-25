@@ -1,28 +1,53 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const models = [
-        { name: 'Ali Khan', height: "6'2\"", age: 25, category: 'male', image: 'Pics/Ali-khan-main-pic.png' },
-        { name: 'Huzaifa', height: "5'7\"", age: 22, category: 'female', image: 'Pics/Huzaifa-main-pic.png' },
-        { name: 'Saad', height: "6'1\"", age: 27, category: 'male', image: 'Pics/Saad-main-pic.png' },
-        { name: 'SZA', height: "5'6\"", age: 24, category: 'female', image: 'Pics/SZA-main-pic.png' },
-        { name: 'Ali Baksh', height: "5'8\"", age: 27, category: 'male', image: 'Pics/AliBaksh-main-pic.png' }
-    ];
-
+    // const models = [
+    //     { name: 'Ali Khan', height: "6'2\"", age: 25, category: 'male', image: 'Pics/Ali-khan-main-pic.png' },
+    //     { name: 'Huzaifa', height: "5'7\"", age: 22, category: 'female', image: 'Pics/Huzaifa-main-pic.png' },
+    //     { name: 'Saad', height: "6'1\"", age: 27, category: 'male', image: 'Pics/Saad-main-pic.png' },
+    //     { name: 'SZA', height: "5'6\"", age: 24, category: 'female', image: 'Pics/SZA-main-pic.png' },
+    //     { name: 'Ali Baksh', height: "5'8\"", age: 27, category: 'male', image: 'Pics/AliBaksh-main-pic.png' }
+    // ];
     // --- RENDER MODEL CARDS ---
-    const gallery = document.getElementById('model-gallery');
-    
-    function renderModels(modelList) {
-        gallery.innerHTML = modelList.map(model => `
-            <a href="ModelDetailPage.htm?name=${encodeURIComponent(model.name)}" class="model-card" data-category="${model.category}">
-                <img src="${model.image}" alt="Model Image">
+    //const gallery = document.getElementById('model-gallery');
+    const gallery = $('#model-gallery');
+    $.ajax({
+        url: "http://localhost:8080/model/show",
+        method: "GET",
+        success: function(response){
+            console.log(response);
+            $(response).each(function(index,model){
+                console.log(model);
+                const modelCard = `
+                <a href="ModelDetailPage.htm?id=${encodeURIComponent(model.modelId)}" class="model-card" data-category="${model.category}">
+                <img src="${model.imgUrl1}" alt="Model Image">
                 <div class="model-info">
                     <h3>${model.name}</h3>
                     <p>Height: ${model.height} | Age: ${model.age} | ${model.category} Model</p>
                 </div>
             </a>
-        `).join('');
-    }
+                `
+                gallery.append(modelCard);
+            })
+        },
+        error: function(xhr, status, error){
+            console.error("Error fetching models:", error);
+        }
+        
+    })
+   
     
-    renderModels(models);
+    // function renderModels(modelList) {
+    //     gallery.innerHTML = modelList.map(model => `
+    //         <a href="ModelDetailPage.htm?name=${encodeURIComponent(model.name)}" class="model-card" data-category="${model.category}">
+    //             <img src="${model.image}" alt="Model Image">
+    //             <div class="model-info">
+    //                 <h3>${model.name}</h3>
+    //                 <p>Height: ${model.height} | Age: ${model.age} | ${model.category} Model</p>
+    //             </div>
+    //         </a>
+    //     `).join('');
+    // }
+    
+    // renderModels(models);
 
     // --- CATEGORY FILTER FUNCTIONALITY ---
     const categoryLinks = document.querySelectorAll('.category-link');
@@ -59,3 +84,5 @@ document.addEventListener('DOMContentLoaded', () => {
         renderModels(filteredModels);
     });
 });
+
+

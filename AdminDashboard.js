@@ -24,7 +24,17 @@ const notificationsSection = document.getElementById('notificationsSection');
 //   }
 
 
+const adminCardButtons = document.querySelectorAll('.admin-cards-button');
+const adminCards = document.querySelectorAll('.admin-cards');
 
+    adminCardButtons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        // Hide all cards
+        adminCards.forEach(card => card.classList.remove('active'));
+        // Show the clicked card
+        adminCards[index].classList.add('active');
+      });
+    });
 
 
 
@@ -188,9 +198,9 @@ function getModelFormFields(model = {}) {
         <div class="form-group"><label for="model-hips">Hips Size:</label><input type="text" id="model-hips" value="${model.hips || ''}" required></div>
         <div class="form-group"><label for="model-rate">Rate:</label><input type="text" id="model-rate" value="${model.rate || ''}" required></div>
         <div class="form-group"><label for="model-description">Description:</label><textarea id="model-description" required>${model.description || ''}</textarea></div>
-        <div class="form-group"><label for="model-img1">Image 1 URL:</label><input type="text" id="model-img1" value="${model.img1 || ''}" required></div>
-        <div class="form-group"><label for="model-img2">Image 2 URL:</label><input type="text" id="model-img2" value="${model.img2 || ''}" required></div>
-        <div class="form-group"><label for="model-img3">Image 3 URL:</label><input type="text" id="model-img3" value="${model.img3 || ''}" required></div>
+        <div class="form-group"><label for="model-img1">Image 1 URL:</label><input type="file" id="model-img1" value="${model.img1 || ''}" required></div>
+        <div class="form-group"><label for="model-img2">Image 2 URL:</label><input type="file" id="model-img2" value="${model.img2 || ''}" required></div>
+        <div class="form-group"><label for="model-img3">Image 3 URL:</label><input type="file" id="model-img3" value="${model.img3 || ''}" required></div>
     `;
 }
 

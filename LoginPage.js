@@ -11,3 +11,33 @@ function showHidePassword(inputField,eyeIcon){
         eyeIcon.classList.remove('fa-eye-slash');
     }
 }
+
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    // Retrieve form data
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    fetch('http://localhost:8080/accounts/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', // Proper Content-Type for form data
+        },
+        body: new URLSearchParams({
+            username: username,
+            password: password,
+        }),
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href="/ExplorePage.htm"
+            //toastr.success('Login successfully');
+            alert('Login successfully');
+        } else {
+            //toastr.error('login failed Invalid credentials');
+            alert("Invalid Credentials");
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+    });
+})

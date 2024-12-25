@@ -8,12 +8,13 @@ const hireCancelBtn = document.getElementById('hire-cancel');
 const params = new URLSearchParams(window.location.search);
 const modelId = params.get('id');
 console.log(modelId);
+let modelRate;
 
 $.ajax({
     url: `http://localhost:8080/model/getmodel/${modelId}`,
     method: "GET",
     success: function(model) {
-
+        modelRate = model.rate;
         document.getElementById('model-name').textContent = model.name;
         document.getElementById('model-rate').textContent = "Rs: " + model.rate;
         document.getElementById('model-height').textContent = model.height;
@@ -27,6 +28,9 @@ $.ajax({
         document.getElementById('model-experience').textContent = model.age /10 + " Years of Experience";
         const imageWrapper = document.querySelector('.image-wrapper');
         imageWrapper.innerHTML = model.images.map(src => `<img src="${model.imgUrl1}" alt="${model.name}">`).join('');
+    },
+    error: function(xhr, status, error){
+        console.log("Error occured",error);
     }
 })
 
@@ -156,10 +160,33 @@ hireCancelBtn.addEventListener('click', () => {
 hireConfirmBtn.addEventListener('click', () => {
     const hireDate = document.getElementById('hire-date').value;
     const hireDescription = document.getElementById('hire-description').value;
-    
+    const hireRecordData = {
+        'modelId': modelId,
+        'clientId': 1,
+        'amount': modelRate,
+        'description': hireDescription,
+        'requestedDate': hireDate
+    }
+    const formData = new FormData();
+    formData.append("hireRecordData",JSON.stringify(hireRecordData))
     if (hireDate && hireDescription) {
+        
+        fetch('http://localhost:8080/client/hiringmodel', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Model hired successfully!');
+            } else {
+                console.error('Form submission failed', response);
+            }
+        })
+        .catch(error => {
+            console.error('Error submitting form:', error);
+        });
         // Logic for confirming the hire (send data to the server)
-        alert('Model hired successfully!');
+        
         hireModal.classList.remove('show'); // Close the modal
     } else {
         alert('Please fill in all fields!');

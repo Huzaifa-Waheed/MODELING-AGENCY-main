@@ -36,7 +36,51 @@ document.addEventListener("DOMContentLoaded", () => {
     notificationsButton.addEventListener("click", (e) => {
         e.preventDefault(); // Prevent default behavior
         notificationsCard.classList.remove("hidden");
+        console.log(sessionStorage.getItem("userId"));
+        $.ajax({
+            url: `http://localhost:8080/client/clientrequest/${parseInt(sessionStorage.getItem("userId"))}`,
+            method: 'GET',
+            success: function(response){
+                console.log(response);
+                showClientTotalNotif(response);
+            },
+            error: function(error){
+                toastr.error("Error",error);
+            }
+        })
     });
+
+    function showClientTotalNotif(notifs){
+        const accepNotifications = $('#Accep-Notifications');
+        const rejNotifications = $('#Rej-Notifications');
+        const pendNotifications = $('#Pend-Notifications');
+        $(notifs).each(function(index,notify){
+            if(notify.state == "PENDING"){
+                pendNotifications.append(`
+                    <div class="notification-line">
+                        <span class="model-name">Model: ${notify.model.name}</span>
+                        <span class="request-date">Request: ${notify.requestedDate.split('T')[0]}</span>
+                    </div>
+                    `)
+            }
+            else if (notify.state == "ACCEPTED"){
+                accepNotifications.append(`
+                    <div class="notification-line">
+                        <span class="model-name">Model: ${notify.model.name}</span>
+                        <span class="request-date">Request: ${notify.requestedDate.split('T')[0]}</span>
+                    </div>
+                    `)
+            }
+            else{
+                rejNotifications.append(`
+                    <div class="notification-line">
+                        <span class="model-name">Model: ${notify.model.name}</span>
+                        <span class="request-date">Request: ${notify.requestedDate.split('T')[0]}</span>
+                    </div>
+                    `)
+            }
+        })
+    }
 
     // Close the notifications card
     closeButton.addEventListener("click", () => {
@@ -59,3 +103,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+

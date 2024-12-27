@@ -118,8 +118,8 @@ const adminCards = document.querySelectorAll('.admin-cards');
                         <p><strong>Model Email, Location:</strong> ${not.model.email}, ${not.model.location}</p>
                     </div>
                     <div class="notification-actions">
-                        <button class="accept-btn" >Accept</button>
-                        <button class="reject-btn" >Reject</button>
+                        <button class="accept-btn" onclick="requestAction('http://localhost:8080/client/accept/${not.id}')">Accept</button>
+                        <button class="reject-btn" onclick="requestAction('http://localhost:8080/client/reject/${not.id}')">Reject</button>
                     </div>
                 </div>
             `
@@ -133,12 +133,8 @@ const adminCards = document.querySelectorAll('.admin-cards');
             url: Url,
             method: 'POST',
             success: function(response){
-                if (response.ok) {
-                    toastr.success("State change successfully")
-                      showdataFromBackend();
-                }else{
-                    toastr.error('action not performed');
-                }
+                toastr.success("State change successfully")
+                showdataFromBackend();
             },
             error: function(error){
                 toastr.error('Error in deleting:', error);
@@ -295,6 +291,11 @@ function openEditModelForm(index) {
     `;
     document.getElementById('add-model-form').addEventListener('submit', handleEditFormSubmit);
 }
+
+document.querySelector("#logoutBtn").addEventListener('click',() => {
+    console.log("yes i am in")
+    window.location.href = "/LandingPage.htm"
+})
 
 // Get model form fields as a template
 function getModelFormFields(model = {}) {

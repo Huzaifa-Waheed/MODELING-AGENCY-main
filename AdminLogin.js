@@ -31,10 +31,18 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(ev
         if (response.ok) {
             window.location.href="/AdminDashboard.html"
             //toastr.success('Login successfully');
+            console.log("he");
             alert('Login successfully');
         } else {
-            //toastr.error('login failed Invalid credentials');
-            alert("Invalid Credentials");
+            response.text().then(text => {
+                if (response.status === 400 && text === "Invalid Credentials") {
+                    console.log("hello");
+                    alert("Invalid Credentials");
+                } else {
+                    console.log("hello  fdsk");
+                    alert("Login failed. Please try again.");
+                }
+            });
         }
     })
     .catch(error => {

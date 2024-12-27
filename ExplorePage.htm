@@ -11,8 +11,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tilt+Prism&family=Ubuntu:wght@300&display=swap"
         rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title>Modeling Agency Website</title>
     <link rel="stylesheet" href="ExplorePage.css">
+    <link rel="stylesheet" href="HomePageClient.css">
 </head>
 
 <body>
@@ -25,6 +28,7 @@
 
         <ul class="navlist">
             <li><a href="./LandingPage.htm">HOME</a></li>
+            <li><a href="#" id="notifications-button">NOTIFICATIONS</a></li>
             <li><a href="#EXPLORE">EXPLORE</a></li>
             <li><a href="./About.htm">ABOUT</a></li>
             <li><a href="./LandingPage.htm">LOGOUT</a></li>
@@ -48,8 +52,37 @@
     <div id="model-gallery">
         <!-- Model cards (dynamic for each model) -->
     </div>
+
+    <!-- Notifications Card -->
+    <div id="notifications-card" class="hidden">
+        <button id="close-card" class="close-btn">&times;</button>
+        <h3>Notifications</h3>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active">Accepted</button>
+            <button class="tab-btn">Rejected</button>
+            <button class="tab-btn">Pending</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <div id="Accep-Notifications" class="tab-pane active">
+                
+            </div>
+            <div id="Rej-Notifications" class="tab-pane">
+                
+            </div>
+            <div id="Pend-Notifications" class="tab-pane">
+                
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="ExplorePage.js"></script>
+    <script src="HomePageClient.js"></script>
 </body>
 
 </html>

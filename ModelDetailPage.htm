@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,7 @@
         rel="stylesheet">
     <title>Modeling Agency Website</title>
     <link rel="stylesheet" href="ModelDetailPage.css">
+    <link rel="stylesheet" href="HomePageClient.css">
 </head>
 
 <body>
@@ -25,6 +26,7 @@
 
         <ul class="navlist">
             <li><a href="./LandingPage.htm">HOME</a></li>
+            <li><a href="#" id="notifications-button">NOTIFICATIONS</a></li>
             <li><a href="./ExplorePage.htm">EXPLORE</a></li>
             <li><a href="./About.htm">ABOUT</a></li>
             <li><a href="#LOGOUT">LOGOUT</a></li>
@@ -68,7 +70,7 @@
         </div>
     </div>
 
-    <!-- CREATING HIRE MODEL CARD -->
+    <!-- CREATING HIRE MODEL CARD
     <div id="hire-card-modal">
         <div id="hire-card">
             <h3>Hire Model<span id="model-name"></span></h3>
@@ -87,10 +89,64 @@
                 <button id="hire-cancel" class="btn cancel">Cancel</button>
             </div>
         </div>
+    </div> -->
+
+    <div id="hire-card-modal">
+        <div id="hire-card">
+            <h3>Hire Model</h3>
+            <form action="http://localhost:8080/client/hiringmodel" method="post">
+                <input type="number" hidden id="modelIds"  name="modelId" />
+                <input type="number" hidden id="clientIds" name="clientId" />
+                <input type="number" hidden id="amounts" name="amount" />
+                <div class="input-field">
+                    <label for="hire-date">Select a date:</label>
+                    <input type="date" id="hire-date" name="requestedDate" />
+                </div>
+    
+                <div class="input-field">
+                    <label for="hire-description">Description:</label>
+                    <textarea id="hire-description" name="description" 
+                        placeholder="Write something about your project..."></textarea>
+                </div>
+    
+                <div class="actions">
+                    <button type="submit" id="hire-confirm" class="btn">Confirm Hire</button>
+                    <button id="hire-cancel" class="btn cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
 
+    <!-- Notifications Card -->
+    <div id="notifications-card" class="hidden">
+        <button id="close-card" class="close-btn">&times;</button>
+        <h3>Notifications</h3>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active">Accepted</button>
+            <button class="tab-btn">Rejected</button>
+            <button class="tab-btn">Pending</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+            <div id="Accep-Notifications" class="tab-pane active">
+                
+            </div>
+            <div id="Rej-Notifications" class="tab-pane">
+                
+            </div>
+            <div id="Pend-Notifications" class="tab-pane">
+                
+            </div>
+        </div>
+    </div>
+
+    
 
 </body>
+<script src="HomePageClient.js"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="ModelDetailPage.js"></script>
 

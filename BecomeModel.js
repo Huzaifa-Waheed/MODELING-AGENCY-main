@@ -36,6 +36,7 @@ document.getElementById('modelForm').addEventListener('submit', function(event) 
         if (response.ok) {
             console.log('Form submitted successfully');
             toastr.success('Form submitted successfully');
+            $('#modelForm')[0].reset();
         } else {
             console.error('Form submission failed', response);
             toastr.error('Form submission failed');

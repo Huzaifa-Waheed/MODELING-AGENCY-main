@@ -14,30 +14,59 @@ function showHidePassword(inputField,eyeIcon){
 
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
+
+
     // Retrieve form data
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    fetch('http://localhost:8080/accounts/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded', // Proper Content-Type for form data
+
+    $.ajax({
+        url: 'http://localhost:8080/accounts/login',
+        type: 'POST',
+        data: {
+            username: $('#username').val(),
+            password: $('#password').val()
         },
-        body: new URLSearchParams({
-            username: username,
-            password: password,
-        }),
-    })
-    .then(response => {
-        if (response.ok) {
-            window.location.href="/ExplorePage.htm"
+        success: function(response) {
+            console.log(response)
+            sessionStorage.removeItem("userId");
+            var sessionUserId = sessionStorage.setItem("userId",response);
+            console.log(sessionUserId)
             //toastr.success('Login successfully');
-            alert('Login successfully');
-        } else {
-            //toastr.error('login failed Invalid credentials');
-            alert("Invalid Credentials");
+            window.location.href="/ExplorePage.htm"
+        },
+        error: function(error){
+            console.log(error);
         }
     })
-    .catch(error => {
-        console.error('Error submitting form:', error);
-    });
+
+    // fetch('http://localhost:8080/accounts/login', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded', // Proper Content-Type for form data
+    //     },
+    //     body: new URLSearchParams({
+    //         username: username,
+    //         password: password,
+    //     }),
+    // })
+    // .then(response => {
+    //     if (response.ok) {
+    //         console.log(response);
+    //         console.log(response.body[0]);
+    //         const user = JSON.stringify(response.body.user);
+    //         console.log(user);
+    //         var sessionUserId = sessionStorage.setItem("userId",response.body);
+    //         console.log(sessionUserId + "  " + sessionStorage.getItem("userId"));
+    //         //window.location.href="/ExplorePage.htm"
+    //         toastr.success('Login successfully');
+    //     } else {
+    //         //toastr.error('login failed Invalid credentials');
+    //         alert("Invalid Credentials");
+    //     }
+    // })
+    // .catch(error => {
+    //     console.error('Error submitting form:', error);
+    // });
 })
+

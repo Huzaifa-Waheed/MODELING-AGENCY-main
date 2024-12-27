@@ -1,11 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // const models = [
-    //     { name: 'Ali Khan', height: "6'2\"", age: 25, category: 'male', image: 'Pics/Ali-khan-main-pic.png' },
-    //     { name: 'Huzaifa', height: "5'7\"", age: 22, category: 'female', image: 'Pics/Huzaifa-main-pic.png' },
-    //     { name: 'Saad', height: "6'1\"", age: 27, category: 'male', image: 'Pics/Saad-main-pic.png' },
-    //     { name: 'SZA', height: "5'6\"", age: 24, category: 'female', image: 'Pics/SZA-main-pic.png' },
-    //     { name: 'Ali Baksh', height: "5'8\"", age: 27, category: 'male', image: 'Pics/AliBaksh-main-pic.png' }
-    // ];
+    const modelPics = [
+         'Pics/Ali-khan-main-pic.png',
+         'Pics/Huzaifa-main-pic.png',
+         'Pics/Saad-main-pic.png',
+         'Pics/SZA-main-pic.png',
+         'Pics/AliBaksh-main-pic.png',
+         'Pics/1574791858_2633.jpg',
+         'Pics/1574791859_2634.jpg',
+         'Pics/1574792204_2844.jpg',
+         'Pics/1574792203_2843.jpg',
+         'Pics/1574792203_2843.jpg',
+         'Pics/1574793622_2972.jpg',
+         'Pics/1574793623_2973.jpg',
+         'Pics/1574792159_2799.jpg',
+         'Pics/1574791860_2635.jpg',
+         'Pics/1574792158_2797.jpg'
+    ];
     // --- RENDER MODEL CARDS ---
     //const gallery = document.getElementById('model-gallery');
     const gallery = $('#model-gallery');
@@ -18,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(model);
                 const modelCard = `
                 <a href="ModelDetailPage.htm?id=${encodeURIComponent(model.modelId)}" class="model-card" data-category="${model.category}">
-                <img src="${model.imgUrl1}" alt="Model Image">
+                <img src="${modelPics[index]}" alt="Model Image">
                 <div class="model-info">
                     <h3>${model.name}</h3>
                     <p>Height: ${model.height} | Age: ${model.age} | ${model.category} Model</p>

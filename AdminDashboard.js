@@ -1,7 +1,7 @@
 //Get the sidebar buttons and sections
-const manageModelsBtn = document.getElementById('manage-models-btn');
-const modelRequestsBtn = document.getElementById('modelRequestsBtn');
-const notificationsBtn = document.getElementById('notificationsBtn');
+// const manageModelsBtn = document.getElementById('manage-models-btn');
+// const modelRequestsBtn = document.getElementById('modelRequestsBtn');
+// const notificationsBtn = document.getElementById('notificationsBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 
 const welcomeSection = document.getElementById('welcome-msg');
@@ -29,32 +29,140 @@ const adminCards = document.querySelectorAll('.admin-cards');
 
     adminCardButtons.forEach((button, index) => {
       button.addEventListener('click', () => {
+        document.querySelector('#welcome-msg').style.display = 'none';
+        
+        document.querySelector('#Add-Md-Form').style.display = 'none';
+        document.querySelector('#Edit-Md-Form').style.display = 'none';
         // Hide all cards
-        adminCards.forEach(card => card.classList.remove('active'));
+        adminCards.forEach(card => card.style.display = 'none');
         // Show the clicked card
-        adminCards[index].classList.add('active');
+        adminCards[index].style.display = 'block';
+        showdataFromBackend()
       });
     });
 
+    function showdataFromBackend(){
+        if(manageModelsSection.style.display == 'block'){
+            $.ajax({
+                url: "http://localhost:8080/model/show",
+                method: "GET",
+                success: function(response){
+                    console.log(response);
+                    renderModels(response)
+                },
+                error: function(xhr, status, error){
+                    console.error("Error fetching models:", error);
+                }
+                
+            })
+        }
+        if(modelRequestsSection.style.display == 'block'){
+            $.ajax({
+                url:'http://localhost:8080/admin/applications',
+                method: 'GET',
+                success: function(response){
+                    console.log(response);
+                    showAllRequests(response)
+                }
+            })
+        }
 
+        if(notificationsSection.style.display == 'block'){
+            $.ajax({
+                url:'http://localhost:8080/admin/notifications',
+                method: 'GET',
+                success: function(response){
+                    console.log(response);
+                    showAllClientNotifications(response)
+                }
+            })
+        }
+
+    }
+
+    function showAllRequests(requests){
+        const tbody = $('#request-tbl-body');
+        tbody.empty();
+        requests.forEach((request, index) => {
+            const tr = `
+                <tr>
+                            <td>${request.applicationId}</td>
+                            <td>${request.name}</td>
+                            <td>${request.email}</td>
+                            <td>${request.state}</td>
+                            <td>
+                                <button class="accept-btn" onclick="requestAction('http://localhost:8080/applications/accept/${request.applicationId}')">Accept</button>
+                                <button class="reject-btn" onclick="requestAction('http://localhost:8080/applications/reject/${request.applicationId}')">Reject</button>
+                            </td>
+                        </tr>
+            `
+            tbody.append(tr)
+
+        })
+    }
+
+    function showAllClientNotifications(notifications){
+        const notifCard = $('#notificationsSection');
+        notifCard.empty()
+        notifCard.append('<h2>Notifications</h2>')
+        $(notifications).each(function(index,not){
+
+            const notify = `
+                <div class="notification-card">
+                    <div class="notification-details">
+                        <p><strong>Client Email, Address:</strong> ${not.client.email}, ${not.client.address}</p>
+                        <p><strong>Date of Hiring:</strong> ${not.requestedDate.split('T')[0]}</p>
+                        <p><strong>Client Name:</strong> ${not.client.name}</p>
+                        <p><strong>Requested Model Name:</strong> ${not.model.name}</p>
+                        <p><strong>Client Description:</strong> ${not.description}</p>
+                        <p><strong>Model Email, Location:</strong> ${not.model.email}, ${not.model.location}</p>
+                    </div>
+                    <div class="notification-actions">
+                        <button class="accept-btn" >Accept</button>
+                        <button class="reject-btn" >Reject</button>
+                    </div>
+                </div>
+            `
+            notifCard.append(notify)
+            
+        })
+    }
+
+    function requestAction(Url){
+        $.ajax({
+            url: Url,
+            method: 'POST',
+            success: function(response){
+                if (response.ok) {
+                    toastr.success("State change successfully")
+                      showdataFromBackend();
+                }else{
+                    toastr.error('action not performed');
+                }
+            },
+            error: function(error){
+                toastr.error('Error in deleting:', error);
+            }
+          })
+    }
 
 
 // Function to show a section and hide others
-function showSection(sectionId) {
-    // Hide all sections
-    welcomeSection.style.display = 'none';
-    manageModelsSection.style.display = 'none';
-    modelRequestsSection.style.display = 'none';
-    notificationsSection.style.display = 'none';
+// function showSection(sectionId) {
+//     // Hide all sections
+//     welcomeSection.style.display = 'none';
+//     manageModelsSection.style.display = 'none';
+//     modelRequestsSection.style.display = 'none';
+//     notificationsSection.style.display = 'none';
 
-    // Show the selected section
-    document.getElementById(sectionId).style.display = 'block';
-}
+//     // Show the selected section
+//     document.getElementById(sectionId).style.display = 'block';
+// }
 
 // On page load, show the welcome section by default
-window.onload = function() {
-    showSection('welcome-msg');  // Show welcome section on load
-};
+// window.onload = function() {
+//     showSection('welcome-msg');  // Show welcome section on load
+// };
 
 // Handle Manage Models button click to show the models section
 // manageModelsBtn.addEventListener('click', function () {
@@ -63,67 +171,70 @@ window.onload = function() {
 // });
 
 // Handle Model Requests button click to show the model requests section
-modelRequestsBtn.addEventListener('click', function () {
-    showSection('modelRequestsSection');  // Show Model Requests section
-});
+// modelRequestsBtn.addEventListener('click', function () {
+//     showSection('modelRequestsSection');  // Show Model Requests section
+// });
 
-// Handle Notifications button click to show the notifications section
-notificationsBtn.addEventListener('click', function () {
-    showSection('notificationsSection');  // Show Notifications section
-});
+// // Handle Notifications button click to show the notifications section
+// notificationsBtn.addEventListener('click', function () {
+//     showSection('notificationsSection');  // Show Notifications section
+// });
 
 // Handle Logout button click
-logoutBtn.addEventListener('click', function () {
-    // You can handle the logout logic here, like redirecting to a login page or showing a message
-    showSection('welcome-msg');  // Show the welcome section after logout
-    alert("Logged out successfully!");  // Show a logout success message
-});
+// logoutBtn.addEventListener('click', function () {
+//     // You can handle the logout logic here, like redirecting to a login page or showing a message
+//     showSection('welcome-msg');  // Show the welcome section after logout
+//     alert("Logged out successfully!");  // Show a logout success message
+// });
 
-
+// document.getElementById('manage-models-section').innerHTML = `
+//         <h2>Manage Models</h2>
+//         <button id="add-model-btn" class="add-model-btn">+ Add Model</button>
+//         <div id="models-list" class="models-list"></div>
+//     `;
 // Handle Manage Models button click to show models section
-manageModelsBtn.addEventListener('click', function () {
-    // Show Manage Models section
-    document.getElementById('right-panel').innerHTML = `
-        <h2>Manage Models</h2>
-        <button id="add-model-btn" class="add-model-btn">+ Add Model</button>
-        <div id="models-list" class="models-list"></div>
-    `;
-    renderModels(); // Initial render of models
-    document.getElementById('add-model-btn').addEventListener('click', openAddModelForm); // Add model button click
-});
+// manageModelsBtn.addEventListener('click', function () {
+//     // Show Manage Models section
+    
+//     renderModels(); // Initial render of models
+
+// });
+document.getElementById('add-model-btn').addEventListener('click', openAddModelForm); // Add model button click
 
 // Handle Model Requests button click to show the model requests section
-modelRequestsBtn.addEventListener('click', function () {
-    showSection('modelRequestsSection');  // Show Model Requests section
-});
+// modelRequestsBtn.addEventListener('click', function () {
+//     showSection('modelRequestsSection');  // Show Model Requests section
+// });
 
-// Handle Notifications button click to show the notifications section
-notificationsBtn.addEventListener('click', function () {
-    showSection('notificationsSection');  // Show Notifications section
-});
+// // Handle Notifications button click to show the notifications section
+// notificationsBtn.addEventListener('click', function () {
+//     showSection('notificationsSection');  // Show Notifications section
+// });
 
-// Handle Logout button click
-logoutBtn.addEventListener('click', function () {
-    // You can handle the logout logic here, like redirecting to a login page or showing a message
-    showSection('welcome-msg');  // Show the welcome section after logout
-    alert("Logged out successfully!");  // Show a logout success message
-});
+// // Handle Logout button click
+// logoutBtn.addEventListener('click', function () {
+//     // You can handle the logout logic here, like redirecting to a login page or showing a message
+//     showSection('welcome-msg');  // Show the welcome section after logout
+//     alert("Logged out successfully!");  // Show a logout success message
+// });
 
 // Model Data Array
 let models = []; // Stores model objects
 let editingIndex = null; // Keeps track of the model being edited
 
 // Function to render models in the right-panel
-function renderModels() {
+function renderModels(allmodels) {
+    // <img src="../../SCD Project Backend/ModelAgency_Spring/${model.imgUrl1.replace(/\\/g, '/')}" alt="${model.name}" class="model-img"></img>
     const modelsList = document.getElementById('models-list');
     modelsList.innerHTML = '';
-    models.forEach((model, index) => {
+    models = allmodels;
+    allmodels.forEach((model, index) => {
         const modelContainer = document.createElement('div');
         modelContainer.classList.add('model-card-container');
         modelContainer.innerHTML = `
             <div class="model-card">
                 <div class="model-card-header">
-                    <img src="${model.img1}" alt="${model.name}" class="model-img">
+                     
                     <div class="model-card-title">${model.name}</div>
                 </div>
                 <div class="model-card-body">
@@ -142,21 +253,23 @@ function renderModels() {
 }
 
 // Function to display success messages
-function showMessage(message) {
-    const messageBox = document.createElement('div');
-    messageBox.className = 'success-message';
-    messageBox.textContent = message;
-    document.body.appendChild(messageBox);
+// function showMessage(message) {
+//     const messageBox = document.createElement('div');
+//     messageBox.className = 'success-message';
+//     messageBox.textContent = message;
+//     document.body.appendChild(messageBox);
 
-    setTimeout(() => {
-        messageBox.remove();
-    }, 3000); // Removes message after 3 seconds
-}
+//     setTimeout(() => {
+//         messageBox.remove();
+//     }, 3000); // Removes message after 3 seconds
+// }
 
 // Open Add Model Form
 function openAddModelForm() {
+    adminCards.forEach(card => card.style.display = 'none');
+    document.querySelector('#Add-Md-Form').style.display = 'block';
     editingIndex = null; // Reset editingIndex for adding a new model
-    document.getElementById('right-panel').innerHTML = `
+    document.getElementById('Add-Md-Form').innerHTML = `
         <h2>Add New Model</h2>
         <form id="add-model-form">
             ${getModelFormFields()}
@@ -168,82 +281,223 @@ function openAddModelForm() {
 
 // Open Edit Model Form
 function openEditModelForm(index) {
+    adminCards.forEach(card => card.style.display = 'none');
+    document.querySelector('#Edit-Md-Form').style.display = 'block';
     editingIndex = index;
     const model = models[index];
-    document.getElementById('right-panel').innerHTML = `
+    console.log(model);
+    document.getElementById('Edit-Md-Form').innerHTML = `
         <h2>Edit Model</h2>
         <form id="add-model-form">
-            ${getModelFormFields(model)}
+            ${getModelEditFormFields(model)}
             <button type="submit">Save Changes</button>
         </form>
     `;
-    document.getElementById('add-model-form').addEventListener('submit', handleFormSubmit);
+    document.getElementById('add-model-form').addEventListener('submit', handleEditFormSubmit);
 }
 
 // Get model form fields as a template
 function getModelFormFields(model = {}) {
     return `
-        <div class="form-group"><label for="model-name">Name:</label><input type="text" id="model-name" value="${model.name || ''}" required></div>
-        <div class="form-group"><label for="model-email">Email:</label><input type="email" id="model-email" value="${model.email || ''}" required></div>
-        <div class="form-group"><label for="model-phone">Phone:</label><input type="text" id="model-phone" value="${model.phone || ''}" required></div>
-        <div class="form-group"><label for="model-location">Location:</label><input type="text" id="model-location" value="${model.location || ''}" required></div>
-        <div class="form-group"><label for="model-dob">Date of Birth:</label><input type="date" id="model-dob" value="${model.dob || ''}" required></div>
-        <div class="form-group"><label for="model-age">Age:</label><input type="number" id="model-age" value="${model.age || ''}" required></div>
-        <div class="form-group"><label for="model-gender">Gender:</label><input type="text" id="model-gender" value="${model.gender || ''}" required></div>
-        <div class="form-group"><label for="model-category">Category:</label><input type="text" id="model-category" value="${model.category || ''}" required></div>
-        <div class="form-group"><label for="model-hair">Hair Color:</label><input type="text" id="model-hair" value="${model.hair || ''}" required></div>
-        <div class="form-group"><label for="model-eyes">Eyes Color:</label><input type="text" id="model-eyes" value="${model.eyes || ''}" required></div>
-        <div class="form-group"><label for="model-height">Height:</label><input type="text" id="model-height" value="${model.height || ''}" required></div>
-        <div class="form-group"><label for="model-weight">Weight:</label><input type="text" id="model-weight" value="${model.weight || ''}" required></div>
-        <div class="form-group"><label for="model-hips">Hips Size:</label><input type="text" id="model-hips" value="${model.hips || ''}" required></div>
-        <div class="form-group"><label for="model-rate">Rate:</label><input type="text" id="model-rate" value="${model.rate || ''}" required></div>
-        <div class="form-group"><label for="model-description">Description:</label><textarea id="model-description" required>${model.description || ''}</textarea></div>
-        <div class="form-group"><label for="model-img1">Image 1 URL:</label><input type="file" id="model-img1" value="${model.img1 || ''}" required></div>
-        <div class="form-group"><label for="model-img2">Image 2 URL:</label><input type="file" id="model-img2" value="${model.img2 || ''}" required></div>
-        <div class="form-group"><label for="model-img3">Image 3 URL:</label><input type="file" id="model-img3" value="${model.img3 || ''}" required></div>
+        <div class="form-group"><label for="model-name">Name:</label><input type="text" name="name" id="name" value="${model.name || ''}" required></div>
+        <div class="form-group"><label for="model-email">Email:</label><input type="email" name="email" id="email" value="${model.email || ''}" required></div>
+        <div class="form-group"><label for="model-phone">Phone:</label><input type="text" name="phone" id="phone" value="${model.phone || ''}" required></div>
+        <div class="form-group"><label for="model-location">Location:</label><input type="text" id="location" value="${model.location || ''}" required></div>
+        <div class="form-group"><label for="model-dob">Date of Birth:</label><input type="date" id="dob" value="${model.dob || ''}" required></div>
+        <div class="form-group"><label for="model-gender">Gender:</label><input type="text" id="gender" value="${model.gender || ''}" required></div>
+        <div class="form-group"><label for="model-category">Category:</label><input type="text" id="category" value="${model.category || ''}" required></div>
+        <div class="form-group"><label for="model-hair">Hair Color:</label><input type="text" id="hair" value="${model.hair || ''}" required></div>
+        <div class="form-group"><label for="model-eyes">Eyes Color:</label><input type="text" id="eyeColor" value="${model.eyeColor || ''}" required></div>
+        <div class="form-group"><label for="model-height">Height:</label><input type="text" id="height" value="${model.height || ''}" required></div>
+        <div class="form-group"><label for="model-weight">Weight:</label><input type="text" id="weight" value="${model.weight || ''}" required></div>
+        <div class="form-group"><label for="model-hips">Hips Size:</label><input type="text" id="hips" value="${model.hips || ''}" required></div>
+        <div class="form-group"><label for="model-rate">Rate:</label><input type="text" id="rate" value="${model.rate || ''}" required></div>
+        <div class="form-group"><label for="model-description">Description:</label><textarea id="description" required>${model.description || ''}</textarea></div>
+        <div class="form-group"><label for="model-img1">Image 1 URL:</label><input type="file" id="imgUrl1" value="${model.img1 || ''}" required></div>
+        <div class="form-group"><label for="model-img2">Image 2 URL:</label><input type="file" id="imgUrl2" value="${model.img2 || ''}" required></div>
+        <div class="form-group"><label for="model-img3">Image 3 URL:</label><input type="file" id="imgUrl3" value="${model.img3 || ''}" required></div>
     `;
 }
 
 // Handle Form Submission
 function handleFormSubmit(event) {
     event.preventDefault();
-    const modelData = {
-        name: document.getElementById('model-name').value,
-        email: document.getElementById('model-email').value,
-        phone: document.getElementById('model-phone').value,
-        location: document.getElementById('model-location').value,
-        dob: document.getElementById('model-dob').value,
-        age: parseInt(document.getElementById('model-age').value, 10),
-        gender: document.getElementById('model-gender').value,
-        category: document.getElementById('model-category').value,
-        hair: document.getElementById('model-hair').value,
-        eyes: document.getElementById('model-eyes').value,
-        height: document.getElementById('model-height').value,
-        weight: document.getElementById('model-weight').value,
-        hips: document.getElementById('model-hips').value,
-        rate: document.getElementById('model-rate').value,
-        description: document.getElementById('model-description').value,
-        img1: document.getElementById('model-img1').value,
-        img2: document.getElementById('model-img2').value,
-        img3: document.getElementById('model-img3').value,
-    };
+    // Create a FormData object from the form
+    const formData = new FormData();
+    
+    formData.append('imgUrl1',this.imgUrl1.files[0]);
+    formData.append('imgUrl2',this.imgUrl2.files[0]);
+    formData.append('imgUrl3',this.imgUrl3.files[0]);
 
-    if (editingIndex === null) {
-        models.push(modelData);
-        showMessage("Model added successfully!");
-    } else {
-        models[editingIndex] = modelData;
-        showMessage("Model updated successfully!");
+    const restData = {
+        'name': this.name.value,
+        'email': this.email.value,
+        'phone': this.phone.value,
+        'dob': this.dob.value,
+        'gender': this.gender.value,
+        'weight': this.weight.value,
+        'height': this.height.value,
+        'hair': this.hair.value,
+        'eyeColor': this.eyeColor.value,
+        'hips': this.hips.value,
+        'description': this.description.value,
+        'category': this.category.value,
+        'rate': this.rate.value,
+        'location': this.location.value
     }
-    renderModels();
-    showSection('manage-models-section');
+
+    formData.append('restData',JSON.stringify(restData));
+
+    // Use fetch API to send the data
+    fetch('http://localhost:8080/model/add', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Form submitted successfully');
+            toastr.success('Form submitted successfully');
+
+                document.querySelector('#welcome-msg').style.display = 'none';
+                
+                document.querySelector('#Add-Md-Form').style.display = 'none';
+                document.querySelector('#Edit-Md-Form').style.display = 'none';
+                // Hide all cards
+                adminCards.forEach(card => card.style.display = 'none');
+                // Show the clicked card
+                adminCards[0].style.display = 'block';
+                showdataFromBackend()
+              
+        } else {
+            console.error('Form submission failed', response);
+            toastr.error('Form submission failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+        toastr.error('Error submitting form');
+    });
     
 }
 
 // Delete Model
 function deleteModel(index) {
-    models.splice(index, 1);
-    renderModels();
-    showMessage("Model deleted successfully!");
+    //models.splice(index, 1);
+    const mdl = models[index];
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `http://localhost:8080/model/delete/${mdl.modelId}`,
+            method: 'DELETE',
+            success: function(response){
+                if (response.ok) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your Model has been deleted.",
+                        icon: "success"
+                      });
+                      showdataFromBackend();
+                }else{
+                    toastr.error('Model deleted failed');
+                }
+            },
+            error: function(error){
+                toastr.error('Error in deleting:', error);
+            }
+          })
+        }
+      });
 }
 
+function getModelEditFormFields(model = {}) {
+    return `
+        <div style="display:none;" class="form-group"><label for="model-name">Name:</label><input type="text" name="modelId" id="modelId" value="${model.modelId || ''}" required></div>
+        <div class="form-group"><label for="model-name">Name:</label><input type="text" name="name" id="name" value="${model.name || ''}" required></div>
+        <div class="form-group"><label for="model-email">Email:</label><input type="email" name="email" id="email" value="${model.email || ''}" required></div>
+        <div class="form-group"><label for="model-phone">Phone:</label><input type="text" name="phone" id="phone" value="${model.phone || ''}" required></div>
+        <div class="form-group"><label for="model-location">Location:</label><input type="text" id="location" value="${model.location || ''}" required></div>
+        <div class="form-group"><label for="model-dob">Date of Birth:</label><input type="date" id="dob" value="${model.dob.split('T')[0] || ''}" required></div>
+        <div class="form-group"><label for="model-gender">Gender:</label><input type="text" id="gender" value="${model.gender || ''}" required></div>
+        <div class="form-group"><label for="model-category">Category:</label><input type="text" id="category" value="${model.category || ''}" required></div>
+        <div class="form-group"><label for="model-hair">Hair Color:</label><input type="text" id="hair" value="${model.hair || ''}" required></div>
+        <div class="form-group"><label for="model-eyes">Eyes Color:</label><input type="text" id="eyeColor" value="${model.eyeColor || ''}" required></div>
+        <div class="form-group"><label for="model-height">Height:</label><input type="text" id="height" value="${model.height || ''}" required></div>
+        <div class="form-group"><label for="model-weight">Weight:</label><input type="text" id="weight" value="${model.weight || ''}" required></div>
+        <div class="form-group"><label for="model-hips">Hips Size:</label><input type="text" id="hips" value="${model.hips || ''}" required></div>
+        <div class="form-group"><label for="model-rate">Rate:</label><input type="text" id="rate" value="${model.rate || ''}" required></div>
+        <div class="form-group"><label for="model-description">Description:</label><textarea id="description" required>${model.description || ''}</textarea></div>
+        <div class="form-group"><label for="model-img1">Image 1 URL:</label><input type="file" id="imgUrl1" value="${model.img1 || ''}" required></div>
+        <div class="form-group"><label for="model-img2">Image 2 URL:</label><input type="file" id="imgUrl2" value="${model.img2 || ''}" required></div>
+        <div class="form-group"><label for="model-img3">Image 3 URL:</label><input type="file" id="imgUrl3" value="${model.img3 || ''}" required></div>
+    `;
+}
+
+// Handle Form Submission
+function handleEditFormSubmit(event) {
+    event.preventDefault();
+    // Create a FormData object from the form
+    const formData = new FormData();
+    
+    formData.append('imgUrl1',this.imgUrl1.files[0]);
+    formData.append('imgUrl2',this.imgUrl2.files[0]);
+    formData.append('imgUrl3',this.imgUrl3.files[0]);
+
+    const restData = {
+        'modelId': this.modelId.value,
+        'name': this.name.value,
+        'email': this.email.value,
+        'phone': this.phone.value,
+        'dob': this.dob.value,
+        'gender': this.gender.value,
+        'weight': this.weight.value,
+        'height': this.height.value,
+        'hair': this.hair.value,
+        'eyeColor': this.eyeColor.value,
+        'hips': this.hips.value,
+        'description': this.description.value,
+        'category': this.category.value,
+        'rate': this.rate.value,
+        'location': this.location.value
+    }
+
+    formData.append('restData',JSON.stringify(restData));
+
+    // Use fetch API to send the data
+    fetch('http://localhost:8080/model/edit', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Form submitted successfully');
+            toastr.success('Form submitted successfully');
+
+                document.querySelector('#welcome-msg').style.display = 'none';
+                
+                document.querySelector('#Add-Md-Form').style.display = 'none';
+                document.querySelector('#Edit-Md-Form').style.display = 'none';
+                // Hide all cards
+                adminCards.forEach(card => card.style.display = 'none');
+                // Show the clicked card
+                adminCards[0].style.display = 'block';
+                showdataFromBackend()
+              
+        } else {
+            console.error('Form submission failed', response);
+            toastr.error('Form submission failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error submitting form:', error);
+        toastr.error('Error submitting form');
+    });
+    
+}

@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="AdminDashboard.css">
 </head>
 
@@ -31,14 +33,14 @@
             </div>
 
             <!-- Manage Models Section (Initially Hidden) -->
-            <div class="manage-models-section admin-cards" id="manage-models-section" style="display:none;">
-                <!-- <h2>Manage Models</h2>
+            <div class="manage-models-section admin-cards" id="manage-models-section">
+                <h2>Manage Models</h2>
                 <button id="add-model-btn" class="add-model-btn">+ Add Model</button>
-                <div id="models-list" class="models-list"></div> -->
+                <div id="models-list" class="models-list"></div>
             </div>
 
             <!-- Model Requests Section (Initially Hidden) -->
-            <div class="model-requests-section admin-cards" id="modelRequestsSection" style="display:none;">
+            <div class="model-requests-section admin-cards" id="modelRequestsSection">
                 <h2>Model Requests</h2>
                 <table class="model-requests-table">
                     <thead>
@@ -50,31 +52,31 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Jane Doe</td>
-                            <td>janedoe@gmail.com</td>
-                            <td>Pending</td>
-                            <td>
-                                <button class="accept-btn">Accept</button>
-                                <button class="reject-btn">Reject</button>
-                            </td>
-                        </tr>
+                    <tbody id="request-tbl-body">
+                        
                     </tbody>
                 </table>
             </div>
 
             <!-- Notifications Section (Initially Hidden) -->
-            <div class="notifications-section admin-cards" id="notificationsSection" style="display:none;">
+            <div class="notifications-section admin-cards" id="notificationsSection">
                 <h2>Notifications</h2>
-                <p>No new notifications.</p>
+                
             </div>
 
+            <div id="Add-Md-Form">
+
+            </div>
+
+            <div id="Edit-Md-Form">
+
+            </div>
 
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="AdminDashboard.js"></script>
 </body>
 

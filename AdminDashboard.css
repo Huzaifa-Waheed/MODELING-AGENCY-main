@@ -301,6 +301,86 @@ button[type="submit"]:hover {
     background-color: #e53935;
   }
 
-  .admin-cards.active {
+  .active {
     display: block;
   }
+
+
+  /* Notifications Section */
+.notifications-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notifications-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Notification Card */
+.notification-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.notification-details {
+    max-width: 70%;
+    line-height: 1.5;
+}
+
+.notification-details p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Action Buttons */
+.notification-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.notification-actions .accept-btn,
+.notification-actions .reject-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.notification-actions .accept-btn {
+    background-color: #4CAF50; /* Sophisticated green */
+    color: #fff;
+}
+
+.notification-actions .accept-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.notification-actions .reject-btn {
+    background-color: #f44336; /* Sophisticated red */
+    color: #fff;
+}
+
+.notification-actions .reject-btn:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}

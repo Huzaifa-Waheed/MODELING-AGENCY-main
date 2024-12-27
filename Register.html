@@ -20,59 +20,58 @@
         </div>
         <div class="reg-register-box">
             <h1 class="sign-heading">Register</h1>
-            <form action="">
+            <form id="registForm" action="http://localhost:8080/accounts/register" method="post">
                 <div class="register-inputs-container">
                     <!-- Name Inputs Container -->
                     <div class="name-inputs-container">
                         <div class="name-input-box">
                             <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" placeholder="Enter First Name" required>
+                            <input type="text" name="firstName" id="first-name" placeholder="Enter First Name" required>
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </div>
                         <div class="name-input-box">
                             <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" placeholder="Enter Last Name" required>
+                            <input type="text" name="lastName" id="last-name" placeholder="Enter Last Name" required>
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </div>
                     </div>
-
+        
                     <div class="email-input-box">
                         <label for="reg-email">Email</label>
-                        <input type="email" id="reg-email" placeholder="Enter Email" required>
+                        <input type="email" name="email" id="reg-email" placeholder="Enter Email" required>
                         <i class="fa fa-envelope" aria-hidden="true"></i>
                     </div>
-
+        
                     <div class="password-input-box">
                         <label for="reg-pass">Password</label>
-                        <input type="password" class="register-password" id="reg-pass" placeholder="Enter Password" required>
+                        <input type="password" name="password" class="register-password" id="reg-pass" placeholder="Enter Password" required>
                         <i class="fa fa-lock" aria-hidden="true"></i>
                         <i class="fa fa-eye eye-icons" onclick="showHidePassword('reg-pass', 'eye-pass')" id="eye-pass" aria-hidden="true"></i>
                     </div>
                     
                     <div class="confirm-password-input-box">
                         <label for="confirm-pass">Confirm Password</label>
-                        <input type="password" id="confirm-pass" placeholder="Confirm Password" required>
+                        <input type="password" name="confirmPassword" id="confirm-pass" placeholder="Confirm Password" required>
                         <i class="fa fa-lock" aria-hidden="true"></i>
                         <i class="fa fa-eye eye-icons" onclick="showHidePassword('confirm-pass', 'eye-confirm')" id="eye-confirm" aria-hidden="true"></i>
                     </div>
-                    
-
+        
                     <div class="address-input-box">
                         <label for="address">Address</label>
-                        <input type="text" id="address" placeholder="Enter Address" required>
+                        <input type="text" name="address" id="address" placeholder="Enter Address" required>
                         <i class="fa fa-map-marker-alt" aria-hidden="true"></i>
                     </div>
-
+        
                     <div class="phone-input-box">
                         <label for="phone">Phone No</label>
-                        <input type="tel" id="phone" placeholder="Enter Phone No" required>
+                        <input type="tel" name="phone" id="phone" placeholder="Enter Phone No" required>
                         <i class="fa fa-phone" aria-hidden="true"></i>
                     </div>
-
+        
                     <div class="Register-btn-box">
                         <button type="submit">Register</button>
                     </div>
-
+        
                     <div class="create-acc-box">
                         <p>Already have an account? <a href="LoginPage.htm">Click here</a></p>
                     </div>
@@ -80,7 +79,7 @@
             </form>
         </div>
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="Register.js"></script>
 </body>
 </html>
